@@ -17,11 +17,18 @@ async function Header() {
           {user ? (
             <LogOutForm />
           ) : (
-            <Button asChild>
-              <Link href="/login" className="">
-                Login
-              </Link>
-            </Button>
+            <>
+              <Button asChild variant="outline">
+                <Link href="/" className="">
+                  Register
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link href="/login" className="">
+                  Login
+                </Link>
+              </Button>
+            </>
           )}
         </div>
       </div>

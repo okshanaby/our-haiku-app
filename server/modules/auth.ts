@@ -26,3 +26,7 @@ export const getUserFromCookie = async () => {
     }
   }
 };
+
+export const comparePassword = (password: string, hashedPassword: string) => {
+  return bcrypt.compare(password, hashedPassword);
+};
