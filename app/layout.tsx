@@ -1,3 +1,4 @@
+import Header from "@/components/layout/header";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,7 +28,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Header />
+        <main className="container mx-auto py-10">{children}</main>
+        <footer className="text-gray-400 text-center text-xs py-5">
+          <p>
+            Copyright &copy; {new Date().getFullYear()} - All rights reserved.
+          </p>
+        </footer>
       </body>
     </html>
   );
