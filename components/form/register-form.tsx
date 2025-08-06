@@ -2,6 +2,7 @@
 
 import { registerUser } from "@/server/actions/authController";
 import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -9,17 +10,18 @@ import { Input } from "../ui/input";
 const RegisterForm = () => {
   const [formState, formAction] = useActionState(registerUser, {
     success: false,
+    message: "",
   });
 
-  console.log("🚀 ~ RegisterForm ~ formState:", formState);
-
   useEffect(() => {
-    if (!formState.success) {
+    if (formState.message && !formState.success) {
       toast.error(formState.message);
-    } else if (formState.success) {
+    } 
+    
+    if (formState.success) {
       toast.success(formState.message);
     }
-  }, [formState]);
+  }, [formState?.message, formState?.success]);
 
   return (
     <form action={formAction} className="space-y-3 w-[80%] mx-auto mt-6">
@@ -58,9 +60,19 @@ const RegisterForm = () => {
           ))}
       </div>
 
-      <Button>Create Account</Button>
+      <SubmitButton />
     </form>
   );
 };
 
 export default RegisterForm;
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? "Creating Account..." : "Create Account"}
+    </Button>
+  );
+}

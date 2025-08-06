@@ -6,7 +6,7 @@ import { createToken, hashPassword } from "../modules/auth";
 import { userRegistrationFormSchema } from "../modules/validations";
 
 type Response = {
-  success: boolean;
+  success?: boolean;
   status?: number;
   message?: string;
   errors?: {
@@ -68,7 +68,7 @@ export const registerUser = async (
       httpOnly: true,
       sameSite: "strict",
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), //  7 day from now
-      secure: true
+      secure: true,
     });
 
     return {
@@ -83,4 +83,13 @@ export const registerUser = async (
       message: "Please try again",
     };
   }
+};
+
+export const logoutUser = async () => {
+  (await cookies()).delete(process.env.APP_NAME!);
+
+  // return {
+  //   success: true,
+  //   message: "Logged out successfully",
+  // };
 };

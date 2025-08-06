@@ -1,15 +1,22 @@
 import RegisterForm from "@/components/form/register-form";
+import { getUserFromCookie } from "@/server/modules/auth";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getUserFromCookie();
+
   return (
     <div className="container mx-auto">
       <div className="flex items-center justify-center">
-        <div className="">
-          <h1 className="text-3xl">
-            Don't have an account? <b>Create One</b>
-          </h1>
-          <RegisterForm />
-        </div>
+        {user ? (
+          <div>Hello Welcome.</div>
+        ) : (
+          <div className="">
+            <h1 className="text-3xl">
+              Don't have an account? <b>Create One</b>
+            </h1>
+            <RegisterForm />
+          </div>
+        )}
       </div>
     </div>
   );
