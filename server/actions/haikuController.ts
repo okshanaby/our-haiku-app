@@ -111,3 +111,27 @@ export const createHaiku = async (
     };
   }
 };
+
+export async function getHaikus(id: string) {
+  try {
+    // save to db
+    const haikusCollection = await getCollection("haikus");
+    const haikus = await haikusCollection
+      .find({ author: ObjectId.createFromHexString(id) })
+      .sort("asc")
+      .toArray();
+
+    return {
+      success: true,
+      data: haikus,
+    };
+  } catch (error) {
+    console.log("🚀 ~ getHaikus ~ error:", error);
+
+    return {
+      success: false,
+      message: "Please try again",
+      data: [],
+    };
+  }
+}
