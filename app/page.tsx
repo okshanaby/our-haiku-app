@@ -1,8 +1,13 @@
 import RegisterForm from "@/components/form/register-form";
 import { getUserFromCookie } from "@/server/modules/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await getUserFromCookie();
+
+  if (user) {
+    redirect("/dashboard");
+  }
 
   return (
     <div className="container mx-auto">

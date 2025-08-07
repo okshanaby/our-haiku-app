@@ -16,8 +16,8 @@ const RegisterForm = () => {
   useEffect(() => {
     if (formState.message && !formState.success) {
       toast.error(formState.message);
-    } 
-    
+    }
+
     if (formState.success) {
       toast.success(formState.message);
     }
@@ -27,7 +27,6 @@ const RegisterForm = () => {
     <form action={formAction} className="space-y-3 w-[80%] mx-auto mt-6">
       <div className="space-y-1">
         <Input
-          autoComplete="email"
           name="email"
           type="email"
           placeholder="Email"
@@ -45,7 +44,6 @@ const RegisterForm = () => {
 
       <div className="space-y-1">
         <Input
-          autoComplete="new-password"
           name="password"
           type="password"
           placeholder="Password"

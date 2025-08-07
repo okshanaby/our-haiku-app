@@ -124,7 +124,6 @@ export const loginUser = async (
     // check user if exist
     const usersCollection = await getCollection("users");
     const user = await usersCollection.findOne({ email: inputUser.email });
-    console.log("🚀 ~ loginUser ~ user:", user);
 
     if (!user) {
       return {

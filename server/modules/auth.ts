@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const hashPassword = (password: string) => {
   const salt = bcrypt.genSaltSync(10);
@@ -30,3 +31,34 @@ export const getUserFromCookie = async () => {
 export const comparePassword = (password: string, hashedPassword: string) => {
   return bcrypt.compare(password, hashedPassword);
 };
+
+export const isAuthentic = async () => {
+  const user = await getUserFromCookie();
+
+  if (!user) {
+    redirect("/login");
+  } else {
+    return user
+  }
+};
+
+// export const validateUserInput = (
+//   schema: ZodObject<{}, $strip>,
+//   inputObject: any
+// ) => {
+//   const results = schema.safeParse(inputObject);
+
+//   if (!results.success) {
+//     const errors: Record<string, string[]> = {};
+
+//     results.error.issues.forEach(err => {
+//       const field = String(err.path[0]);
+//       if (!errors[field]) {
+//         errors[field] = [];
+//       }
+//       errors[field].push(err.message);
+//     });
+
+//     return { success: false, errors, message: "Invalid inputs" };
+//   }
+// };

@@ -15,7 +15,12 @@ async function Header() {
 
         <div className="flex gap-2 items-center">
           {user ? (
-            <LogOutForm />
+            <>
+              <Button asChild>
+                <Link href="/create-haiku">Create Haiku</Link>
+              </Button>
+              <LogOutForm />
+            </>
           ) : (
             <>
               <Button asChild variant="outline">
