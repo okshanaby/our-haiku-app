@@ -9,9 +9,16 @@ async function Header() {
   return (
     <header className="bg-gray-100 shadow py-6">
       <div className="container mx-auto flex items-center justify-between">
+        <div className="flex items-end gap-12">
+
         <Link href="/" className="font-bold text-4xl ">
           OurHaikuApp
         </Link>
+        
+         <Link href="/dashboard" className="pb-1 underline underline-offset-2">
+          Dashboard
+        </Link>
+        </div>
 
         <div className="flex gap-2 items-center">
           {user ? (
