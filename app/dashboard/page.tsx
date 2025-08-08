@@ -16,7 +16,7 @@ const DashboardPage = () => {
 };
 
 const HaikuList = async () => {
-  await isAuthentic();
+  const user = await isAuthentic();
 
   const haikus = await getHaikus();
 
@@ -29,9 +29,12 @@ const HaikuList = async () => {
             <p>{haiku.line2}</p>
             <p>{haiku.line3}</p>
             <br />
-            <Button asChild size="sm">
-              <Link href={`/edit-haiku/${haiku._id.toString()}`}>Edit</Link>
-            </Button>
+            {/* @ts-ignore  */}
+            {user.id === haiku.author.toString() && (
+              <Button asChild size="sm">
+                <Link href={`/edit-haiku/${haiku._id.toString()}`}>Edit</Link>
+              </Button>
+            )}
           </div>
         ))
       ) : (

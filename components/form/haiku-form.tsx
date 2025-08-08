@@ -14,6 +14,7 @@ type HaikuFormProps = {
     success: boolean;
     message?: string;
     data?: {
+      _id: string;
       line1: string;
       line2: string;
       line3: string;
@@ -22,7 +23,7 @@ type HaikuFormProps = {
 };
 
 const HaikuForm = ({ action = "create", haiku }: HaikuFormProps) => {
-  let pageAction = action === "edit" ? createHaiku : editHaiku;
+  let pageAction = action === "edit" ? editHaiku : createHaiku;
 
   const [formState, formAction] = useActionState(pageAction, {
     success: false,
@@ -43,6 +44,13 @@ const HaikuForm = ({ action = "create", haiku }: HaikuFormProps) => {
   return (
     <form action={formAction} className="space-y-3 mx-auto mt-6">
       <div className="space-y-1">
+        <Input
+          name="haikuId"
+          type="string"
+          hidden
+          defaultValue={haiku ? haiku.data!._id : ""}
+        />
+
         <Input
           name="line1"
           type="string"
@@ -96,19 +104,25 @@ const HaikuForm = ({ action = "create", haiku }: HaikuFormProps) => {
           ))}
       </div>
 
-      <SubmitButton />
+      <SubmitButton action="edit" />
     </form>
   );
 };
 
 export default HaikuForm;
 
-function SubmitButton() {
+function SubmitButton({ action = "create" }: HaikuFormProps) {
   const { pending } = useFormStatus();
 
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Creating..." : "Create"}
+      {action === "create"
+        ? pending
+          ? "Creating..."
+          : "Create"
+        : pending
+        ? "Editing..."
+        : "Edit"}
     </Button>
   );
 }
