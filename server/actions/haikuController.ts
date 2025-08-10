@@ -1,6 +1,7 @@
 "use server";
 
 import { ObjectId } from "mongodb";
+import { redirect } from "next/navigation";
 import { getCollection } from "../lib/db";
 import { isAuthentic } from "../modules/auth";
 import { haikuFormSchema } from "../modules/validations";
@@ -223,3 +224,42 @@ export async function getHaikuById(id: string) {
     };
   }
 }
+
+export const deleteHaiku = async (formData: any) => {
+  try {
+    const id = formData.get("id");
+    const user = await isAuthentic();
+
+    // check for the haiku
+    const haikusCollection = await getCollection("haikus");
+    const haikuInQuestion = await haikusCollection // @ts-ignore
+      .findOne({ _id: ObjectId.createFromHexString(id) });
+
+    if (!haikuInQuestion) {
+      redirect("/dashboard");
+    }
+
+    let authorId;
+    // Ensure user is not a string and has id
+    if (typeof user !== "string" && "id" in user) {
+      authorId = user.id;
+    } else {
+      authorId = undefined;
+      throw new Error("Invalid user payload");
+    }
+
+    // make sure you are the author of this post
+    if (haikuInQuestion.author.toString() !== user.id) {
+      redirect("/dashboard");
+    }
+
+    // update haiku
+    await haikusCollection.deleteOne({ _id: ObjectId.createFromHexString(id) });
+
+    redirect("/dashboard");
+  } catch (error) {
+    console.log("🚀 ~ deleteHaiku ~ error:", error);
+
+    redirect("/dashboard");
+  }
+};
