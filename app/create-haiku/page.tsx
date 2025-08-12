@@ -10,7 +10,7 @@ const CreateHaikuPage = async () => {
         {
           <div className="w-[30%]">
             <h1 className="text-3xl">Create Haiku</h1>
-            <HaikuForm />
+            <HaikuForm action="create" />
           </div>
         }
       </div>

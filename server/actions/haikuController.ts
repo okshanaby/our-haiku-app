@@ -1,10 +1,17 @@
 "use server";
 
+import { v2 as cloudinary } from "cloudinary";
 import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
 import { getCollection } from "../lib/db";
 import { isAuthentic } from "../modules/auth";
 import { haikuFormSchema } from "../modules/validations";
+
+const cloudinaryConfig = cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 type Response = {
   success?: boolean;
@@ -42,6 +49,7 @@ export const createHaiku = async (
       line2,
       line3,
       author: ObjectId.createFromHexString(authorId),
+      photo: "",
     };
 
     // validate user inputs
@@ -59,6 +67,19 @@ export const createHaiku = async (
       });
 
       return { success: false, errors, message: "Invalid inputs" };
+    }
+
+    //  check cloudinary asset signature
+    const expectedSignature = cloudinary.utils.api_sign_request(
+      {
+        public_id: formData.get("public_id"),
+        version: formData.get("version"),
+      },
+      cloudinaryConfig.api_secret!
+    );
+
+    if (expectedSignature === formData.get("signature")) {
+      inputHaiku.photo = formData.get("public_id");
     }
 
     // save to db
@@ -133,6 +154,7 @@ export const editHaiku = async (
       line2,
       line3,
       author: ObjectId.createFromHexString(authorId),
+      photo: "",
     };
 
     // validate user inputs
@@ -170,6 +192,19 @@ export const editHaiku = async (
         success: false,
         message: "Can't edit, you are not the author",
       };
+    }
+
+    //  check cloudinary asset signature
+    const expectedSignature = cloudinary.utils.api_sign_request(
+      {
+        public_id: formData.get("public_id"),
+        version: formData.get("version"),
+      },
+      cloudinaryConfig.api_secret!
+    );
+
+    if (expectedSignature === formData.get("signature")) {
+      inputHaiku.photo = formData.get("public_id");
     }
 
     // update haiku

@@ -1,8 +1,9 @@
 "use client";
 
 import { createHaiku, editHaiku } from "@/server/actions/haikuController";
+import { CldUploadWidget } from "next-cloudinary";
 import { redirect } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
@@ -24,6 +25,9 @@ type HaikuFormProps = {
 
 const HaikuForm = ({ action = "create", haiku }: HaikuFormProps) => {
   let pageAction = action === "edit" ? editHaiku : createHaiku;
+  const [public_id, setPublic_id] = useState("");
+  const [signature, setSignature] = useState("");
+  const [version, setVersion] = useState("");
 
   const [formState, formAction] = useActionState(pageAction, {
     success: false,
@@ -104,7 +108,37 @@ const HaikuForm = ({ action = "create", haiku }: HaikuFormProps) => {
           ))}
       </div>
 
-      <SubmitButton action="edit" />
+      <div className="">
+        <Input name="public_id" type="hidden" hidden value={public_id} />
+        <Input name="signature" type="hidden" hidden value={signature} />
+        <Input name="version" type="hidden" hidden value={version} />
+
+        <CldUploadWidget
+          signatureEndpoint="/api/sign-cloudinary-image"
+          onQueuesEnd={(results, { widget }) => {
+            widget.close();
+          }}
+          onSuccess={(results, { widget }) => {
+            // @ts-ignore
+            setPublic_id(results?.info?.public_id); // @ts-ignore
+            setVersion(results?.info?.version); // @ts-ignore
+            setSignature(results?.info?.signature);
+          }}
+        >
+          {({ open }) => {
+            return (
+              <Button
+                type="button"
+                className="bg-blue-500"
+                onClick={() => open()}
+              >
+                Upload an Image
+              </Button>
+            );
+          }}
+        </CldUploadWidget>
+      </div>
+      <SubmitButton action={action} />
     </form>
   );
 };
