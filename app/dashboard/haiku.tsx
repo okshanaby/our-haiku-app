@@ -3,8 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { deleteHaiku } from "@/server/actions/haikuController";
 import { CldImage } from "next-cloudinary";
+import Image from "next/image";
 import Link from "next/link";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Haiku({ haiku, user }: { haiku: any; user: any }) {
   if (!haiku.photo) {
     haiku.photo = "samples/canvas";
@@ -12,7 +14,7 @@ export default function Haiku({ haiku, user }: { haiku: any; user: any }) {
 
   return (
     <div className="relative rounded-xl overflow-hidden max-w-[650px] mx-auto mb-7">
-      <img src="/aspect-ratio.png" />
+      <Image width={650} height={300} alt="loader" src="/aspect-ratio.png" />
 
       <div className="absolute inset-0 bg-gray-200 grid">
         <span className="loading loading-dots loading-lg m-auto"></span>
@@ -60,7 +62,6 @@ export default function Haiku({ haiku, user }: { haiku: any; user: any }) {
       />
 
       <div className="absolute bottom-2 right-1 flex">
-        {/* @ts-ignore  */}
         {user.id === haiku.author.toString() && (
           <div className="flex items-center gap-2">
             <Button asChild size="sm">

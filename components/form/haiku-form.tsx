@@ -24,7 +24,7 @@ type HaikuFormProps = {
 };
 
 const HaikuForm = ({ action = "create", haiku }: HaikuFormProps) => {
-  let pageAction = action === "edit" ? editHaiku : createHaiku;
+  const pageAction = action === "edit" ? editHaiku : createHaiku;
   const [public_id, setPublic_id] = useState("");
   const [signature, setSignature] = useState("");
   const [version, setVersion] = useState("");
@@ -115,13 +115,13 @@ const HaikuForm = ({ action = "create", haiku }: HaikuFormProps) => {
 
         <CldUploadWidget
           signatureEndpoint="/api/sign-cloudinary-image"
-          onQueuesEnd={(results, { widget }) => {
+          onQueuesEnd={(_, { widget }) => {
             widget.close();
           }}
-          onSuccess={(results, { widget }) => {
-            // @ts-ignore
-            setPublic_id(results?.info?.public_id); // @ts-ignore
-            setVersion(results?.info?.version); // @ts-ignore
+          onSuccess={results => {
+            // @ts-expect-error: missing types from the package
+            setPublic_id(results?.info?.public_id); // @ts-expect-error: missing types from the package
+            setVersion(results?.info?.version); // @ts-expect-error: missing types from the package
             setSignature(results?.info?.signature);
           }}
         >

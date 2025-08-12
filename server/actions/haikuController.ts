@@ -108,7 +108,7 @@ export async function getHaikus() {
 
     // save to db
     const haikusCollection = await getCollection("haikus");
-    const haikus = await haikusCollection // @ts-ignore
+    const haikus = await haikusCollection // @ts-expect-error
       .find({ author: ObjectId.createFromHexString(user.id) })
       .sort({ _id: -1 }) // Sort by newest first
       .toArray();
@@ -176,8 +176,9 @@ export const editHaiku = async (
 
     // check for the haiku
     const haikusCollection = await getCollection("haikus");
-    const haikuInQuestion = await haikusCollection // @ts-ignore
-      .findOne({ _id: ObjectId.createFromHexString(haikuId) });
+    const haikuInQuestion = await haikusCollection.findOne({
+      _id: ObjectId.createFromHexString(haikuId),
+    });
 
     if (!haikuInQuestion) {
       return {
@@ -233,8 +234,9 @@ export async function getHaikuById(id: string) {
 
     // check if haiku exist
     const haikusCollection = await getCollection("haikus");
-    const haiku = await haikusCollection // @ts-ignore
-      .findOne({ _id: ObjectId.createFromHexString(id) });
+    const haiku = await haikusCollection.findOne({
+      _id: ObjectId.createFromHexString(id),
+    });
 
     haiku._id = haiku._id.toString();
     haiku.author = haiku.author.toString();
@@ -267,8 +269,9 @@ export const deleteHaiku = async (formData: any) => {
 
     // check for the haiku
     const haikusCollection = await getCollection("haikus");
-    const haikuInQuestion = await haikusCollection // @ts-ignore
-      .findOne({ _id: ObjectId.createFromHexString(id) });
+    const haikuInQuestion = await haikusCollection.findOne({
+      _id: ObjectId.createFromHexString(id),
+    });
 
     if (!haikuInQuestion) {
       redirect("/dashboard");
