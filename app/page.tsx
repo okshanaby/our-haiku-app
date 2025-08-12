@@ -17,7 +17,7 @@ export default async function Home() {
         ) : (
           <div className="w-full max-w-md">
             <h1 className="text-2xl sm:text-3xl text-center mb-6">
-              Don&apos;t have an account? <b>Create One</b>
+              Create an account?
             </h1>
             <RegisterForm />
           </div>
