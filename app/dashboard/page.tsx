@@ -19,7 +19,7 @@ const HaikuList = async () => {
   const user = await isAuthentic();
 
   return (
-    <div className="flex flex-col items-center  mt-6 ">
+    <div className="flex flex-col items-center px-6 mt-6 ">
       <div className="">
         {haikus.data.length > 0 ? (
           haikus.data.map((haiku, index) => {

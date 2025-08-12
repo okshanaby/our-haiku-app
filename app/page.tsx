@@ -10,13 +10,13 @@ export default async function Home() {
   }
 
   return (
-    <div className="container mx-auto">
-      <div className="flex items-center justify-center">
+    <div className="container mx-auto px-4">
+      <div className="flex flex-col items-center justify-center min-h-">
         {user ? (
-          <div>Hello Welcome.</div>
+          <div className="text-center text-lg">Hello Welcome.</div>
         ) : (
-          <div className="">
-            <h1 className="text-3xl">
+          <div className="w-full max-w-md">
+            <h1 className="text-2xl sm:text-3xl text-center mb-6">
               Don't have an account? <b>Create One</b>
             </h1>
             <RegisterForm />

@@ -7,20 +7,21 @@ async function Header() {
   const user = await getUserFromCookie();
 
   return (
-    <header className="bg-gray-100 shadow py-6">
-      <div className="container mx-auto flex items-center justify-between">
-        <div className="flex items-end gap-12">
-
-        <Link href="/" className="font-bold text-4xl ">
-          OurHaikuApp
-        </Link>
-        
-         <Link href="/dashboard" className="pb-1 underline underline-offset-2">
-          Dashboard
-        </Link>
+    <header className="bg-gray-100 shadow py-4">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-4 md:gap-12 w-full md:w-auto">
+          <Link href="/" className="font-bold text-3xl md:text-4xl">
+            OurHaikuApp
+          </Link>
+          <Link
+            href="/dashboard"
+            className="pb-1 underline underline-offset-2 text-base md:text-lg"
+          >
+            Dashboard
+          </Link>
         </div>
 
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center w-full md:w-auto justify-center md:justify-end">
           {user ? (
             <>
               <Button asChild>

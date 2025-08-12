@@ -24,7 +24,7 @@ const RegisterForm = () => {
   }, [formState?.message, formState?.success]);
 
   return (
-    <form action={formAction} className="space-y-3 w-[80%] mx-auto mt-6">
+    <form action={formAction} className="space-y-3 mx-auto mt-6">
       <div className="space-y-1">
         <Input
           name="email"
